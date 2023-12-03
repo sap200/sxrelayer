@@ -75,7 +75,7 @@
            <i> &copy; Created by zed !! 😉 Just Kidding, Feel free to copy the site and violate the copyright 🙂 !! </i>
         </div>
 
-         <alert-modal :is-visible="isModalVisible" :message="alertMessage" @close="onCloseModal" />
+         <alert-modal :is-visible="isModalVisible" :message="alertMessage" @close="onCloseModal" :noCloseButton="noCloseButton"/>
 
     </div>
 </template>
@@ -116,6 +116,7 @@ export default {
             receipentAddressInSepoliaChain: "",
             nftContractAddressToWithdraw: "",
             nftTokenIdToWithdraw: 0,
+            noCloseButton: false,
         }
     },
 
@@ -146,8 +147,9 @@ export default {
 
         },
 
-        showAlert(alertMsg) {
+        showAlert(alertMsg, shouldShowCloseButton) {
             this.isModalVisible = true;
+            this.noCloseButton = shouldShowCloseButton;
             this.alertMessage = alertMsg;
         },
 
@@ -165,11 +167,11 @@ export default {
                     this.setButtonText()
                 } catch (error) {
                     console.error('User denied account access');
-                    this.showAlert('Please connect to MetaMask.')
+                    this.showAlert('Please connect to MetaMask.', false);
                 }
             } else {
                 console.error("Metamask not existing")
-                this.showAlert("MetaMask is not available. Please install and configure MetaMask.")
+                this.showAlert("MetaMask is not available. Please install and configure MetaMask.", false);
             }
         },
 
@@ -182,7 +184,7 @@ export default {
         handleAccountsChanged(accounts) {
             if (accounts.length === 0) {
                 console.log('Please connect to MetaMask.');
-                this.showAlert('Please connect to MetaMask.')
+                this.showAlert('Please connect to MetaMask.', false);
             } else {
                 this.account = accounts[0];
                 this.walletAddress = this.account;
@@ -204,11 +206,11 @@ export default {
 
             if(this.switch == 1) {
                 if(chainId != this.sepoliaChainId) {
-                    this.showAlert("Please change chain to Sepolia !! Else transfer won't work")
+                    this.showAlert("Please change chain to Sepolia !! Else transfer won't work", false)
                 }
             } else {
                 if(chainId != this.evmXrplChainId) {
-                    this.showAlert("Please change chain to EVM XRPL Sidechain !! ")
+                    this.showAlert("Please change chain to EVM XRPL Sidechain !! ", false)
                 }
 
             }
@@ -223,11 +225,11 @@ export default {
                     this.handleChainChanged(chainId);
                 } catch (error) {
                     console.error(`Error getting chainId: ${error}`);
-                    this.showAlert(`Error getting chainId: ${error}`)
+                    this.showAlert(`Error getting chainId: ${error}`, false)
                 }
             } else {
                 console.error('MetaMask is not available. Please install and configure MetaMask.');
-                this.showAlert('MetaMask is not available. Please install and configure MetaMask.')
+                this.showAlert('MetaMask is not available. Please install and configure MetaMask.', false)
 
             }
         },
@@ -240,12 +242,12 @@ export default {
                     return chainId
                 } catch (error) {
                     console.error(`Error getting chainId: ${error}`);
-                    this.showAlert(`Error getting chainId: ${error}`)
+                    this.showAlert(`Error getting chainId: ${error}`, false)
                     return "0"
                 }
             } else {
                 console.error('MetaMask is not available. Please install and configure MetaMask.');
-                this.showAlert('MetaMask is not available. Please install and configure MetaMask.')
+                this.showAlert('MetaMask is not available. Please install and configure MetaMask.', false)
                 return "0"
             }
         },
@@ -257,7 +259,7 @@ export default {
         async approveLockerContract() {
             const chainId = await this.getCurrentChainId()
             if(chainId != this.sepoliaChainId) {
-                this.showAlert("Please switch to sepolia chain Id");
+                this.showAlert("Please switch to sepolia chain Id", false);
                 console.log("Invalid chainId , its not sepolia");
                 return;
             }
@@ -278,10 +280,10 @@ export default {
                         params: [txnParams],
                 })
 
-                this.showAlert("Txn Hash is: " + txnHash + ". Please check it out on sepolia block explorer : " + SEPOLIA_BLOCK_EXPLORER + txnHash)
+                this.showAlert("Txn Hash is: " + txnHash + ". Please check it out on sepolia block explorer : " + SEPOLIA_BLOCK_EXPLORER + txnHash, false)
                 console.log('Transaction hash:', txnHash);
         } catch (error) {
-                this.showAlert(JSON.stringify(error))
+                this.showAlert(JSON.stringify(error), false)
                 console.error('Error:', error);
         }
 
@@ -313,13 +315,14 @@ export default {
                         params: [txnParams],
                 })
 
-                this.showAlert("Txn Hash is: " + txnHash + ". Please check it out on sepolia block explorer : " + SEPOLIA_BLOCK_EXPLORER + txnHash)
+                this.showAlert("Txn Hash is: " + txnHash + ". Please check it out on sepolia block explorer : " + SEPOLIA_BLOCK_EXPLORER + txnHash, false)
                 console.log('Transaction hash:', txnHash);
+                this.showAlert("Transaction is in progress...", true);
                 // Example using Web3.js
 
 
             } catch (error) {
-                this.showAlert(JSON.stringify(error))
+                this.showAlert(JSON.stringify(error), false)
                 console.error('Error:', error);
             }
 
@@ -350,9 +353,10 @@ export default {
                         params: [txnParams],
                 })
 
-                this.showAlert("Txn Hash is: " + txnHash + ". Please check it out on EVM_XRPL block explorer : " + EVM_XRPL_BLOCK_EXPLORER + txnHash)
+                this.showAlert("Txn Hash is: " + txnHash + ". Please check it out on EVM_XRPL block explorer : " + EVM_XRPL_BLOCK_EXPLORER + txnHash, false)
                 console.log('Transaction hash:', txnHash);
                 // Example using Web3.js
+                this.showAlert("Transaction is in progress...", true);
 
             } catch (error) {
                 this.showAlert(JSON.stringify(error))
@@ -390,8 +394,9 @@ export default {
                 this.showAlert("Txn Hash is: " + txnHash + ". Please check it out on sepolia block explorer : " + SEPOLIA_BLOCK_EXPLORER + txnHash)
                 console.log('Transaction hash:', txnHash);
                 // Example using Web3.js
+                this.showAlert("Transaction is processing ...", true);
             } catch (error) {
-                this.showAlert(JSON.stringify(error))
+                this.showAlert(JSON.stringify(error), false)
                 console.error('Error:', error);
             }
 
@@ -408,29 +413,29 @@ export default {
 
             // Listen for events
             event.on('data', (eventData) => {
-                this.showAlert(JSON.stringify(eventData.returnValues) + ". :::::: Transfer to EVM_XRPL Chain successful. ")
+                this.showAlert("✅ Transfer to EVM_XRPL Chain successful. ", false)
                 console.log('Event data:', eventData.returnValues);
             })
             .on('error', (error) => {
-                this.showAlert(JSON.stringify(error))
+                this.showAlert(JSON.stringify(error), false)
                 console.error('Error:', error);
             });
 
             unlockEvent.on('data', (eventData) => {
-                this.showAlert(JSON.stringify(eventData.returnValues) + ":::::: Your NFT is unlocked please proceed to withdraw")
+                this.showAlert("✅ Your NFT is unlocked please proceed to withdraw", false)
                 console.log('Event data:', eventData.returnValues);
             })
             .on('error', (error) => {
-                this.showAlert(JSON.stringify(error))
+                this.showAlert(JSON.stringify(error), false)
                 console.error('Error:', error);
             });
 
             withdrawEvent.on('data', (eventData) => {
-                this.showAlert(JSON.stringify(eventData.returnValues) + ":::::: NFT withdrawn, proceed to opensea to validate !!")
+                this.showAlert("✅ NFT withdrawn, proceed to opensea to validate !!", false)
                 console.log('Event data:', eventData.returnValues);
             })
             .on('error', (error) => {
-                this.showAlert(JSON.stringify(error))
+                this.showAlert(JSON.stringify(error), false)
                 console.error('Error:', error);
             });
         }

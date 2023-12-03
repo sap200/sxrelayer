@@ -4,8 +4,14 @@
     <div class="modal">
       <p id="m-id">{{ message }}</p>
       <br><br>
-      <hr>
-      <Button class="fdb-btn" @click="close" >Close</Button>
+                <img src="../assets/txn.png" v-if="noCloseButton"/>
+
+        <div class="rectangular-box" v-if="noCloseButton">
+          <div class="loader"></div>
+      </div>
+
+      <hr  v-if="!noCloseButton">
+      <Button class="fdb-btn" @click="close" v-if="!noCloseButton" >Close</Button>
     </div>
   </div>
 </template>
@@ -15,7 +21,8 @@ export default {
   name: "AlertModal",
   props: {
     isVisible: Boolean,
-    message: String
+    message: String,
+    noCloseButton: Boolean
   },
   methods: {
     close() {
@@ -65,6 +72,34 @@ export default {
     background-image: linear-gradient(to left, skyblue, aliceblue);
     box-shadow: 1px 1px 10px pink; /* Add the box shadow effect on hover */
 
+}
+.rectangular-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 600px; /* Width of the rectangular box */
+  height: 100px; /* Height of the rectangular box */
+  margin: auto; /* Center the box horizontally */
+  position: relative;
+}
+
+.loader {
+  border: 5px solid #f3f3f3; /* Light grey background */
+  border-top: 5px solid #3498db; /* Blue color for the moving part */
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+img {
+  width: 200px;
+  height: auto;
 }
 
 </style>
