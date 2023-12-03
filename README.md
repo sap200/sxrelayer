@@ -4,7 +4,7 @@
 `SX-Relayer` is a front-end application that enables seamless cross-chain asset transfers between different blockchain networks. It interacts with locker and minter smart contracts, allowing users to lock, mint, and burn tokens as part of the transfer process.
 
 ## Architecture
-![Architecture of SX Relayer](./assets/SX_RELAYER.png)
+![Architecture of SX Relayer](./src/assets/SX_RELAYER.png)
 
 
 ## Cross-Chain Transfer Flow
