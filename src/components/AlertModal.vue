@@ -4,7 +4,7 @@
     <div class="modal">
       <p id="m-id">{{ message }}</p>
       <br><br>
-                <img src="../assets/txn.png" v-if="noCloseButton"/>
+                <img src="../assets/txn.jpg" v-if="noCloseButton"/>
 
         <div class="rectangular-box" v-if="noCloseButton">
           <div class="loader"></div>
