@@ -1,25 +1,30 @@
-# sxrelayer
+# SX-Relayer - Cross-Chain Asset Transfer Interface
 
-## Project setup
-```
-npm install
-```
+## Introduction
+`SX-Relayer` is a front-end application that enables seamless cross-chain asset transfers between different blockchain networks. It interacts with locker and minter smart contracts, allowing users to lock, mint, and burn tokens as part of the transfer process.
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+## Architecture
+![Architecture of SX Relayer](./assets/SX_RELAYER.png)
 
-### Compiles and minifies for production
-```
-npm run build
-```
 
-### Lints and fixes files
-```
-npm run lint
-```
+## Cross-Chain Transfer Flow
+The following ASCII diagram illustrates the basic flow of the cross-chain asset transfer process:
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
-"# sxrelayer" 
+
+## Technology Stack
+- **Front-End**: Vue.js
+- **Smart Contracts**: Locker and Minter contracts.
+- **Blockchain Networks**: Sepolia, EVM-compatible XRPL Sidechain, etc.
+
+## Getting Started
+Set up instructions:
+1. Clone the repository: `git clone https://github.com/sap200/sxrelayer`
+2. Install dependencies: `npm install`
+4. Run the application: `npm run serve`
+
+## Contributing
+Guidelines for contributing:
+- Fork the repo and create a new branch
+- Follow coding standards
+- Submit pull requests with comprehensive descriptions
+
